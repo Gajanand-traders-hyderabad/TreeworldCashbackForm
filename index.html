@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Cashback Offer - Tree World Ply</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dtsf7jbkq/image/upload/v1754586646/Add_a_subheading_20250409_123137_0000_pq4ohe.png">
+    <style>
+        /* === original CSS, untouched except for popup-content and popup-buttons tweaks === */
+        :root {
+            --brand: #44bc93;
+            --brand-dark: #34846e;
+            --light-bg: #f6f6f4;
+            --radius: 12px;
+            --error-color: #e07b7b;
+            --success-color: var(--brand-dark);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--light-bg);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            padding: 2rem 1rem;
+            box-sizing: border-box;
+        }
+
+        main {
+            background: #fff;
+            max-width: 400px;
+            width: 100%;
+            border-radius: var(--radius);
+            box-shadow: 0 6px 24px rgba(68, 188, 147, 0.08);
+            padding: 2.5rem 2rem 2rem;
+            box-sizing: border-box;
+            position: relative;
+            min-height: 460px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-container {
+            width: 200px;         /* set desired container size */
+            height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+        .logo img {
+  max-width: 100%;      /* scale the image down */
+  max-height: 100%;
+  object-fit:none  /* maintain aspect ratio */
+}
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--brand-dark);
+            margin: 0.75rem 0 0.25rem;
+            line-height: 1.2;
+        }
+
+        .offer-tag {
+            display: inline-block;
+            background: var(--brand-dark);
+            color: #fff;
+            border-radius: 999px;
+            padding: 0.4rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.03em;
+            margin-top: 0.6rem;
+        }
+
+        form {
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            margin: 1.15rem 0 0.5rem;
+            font-weight: 600;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"] {
+            width: 100%;
+            padding: 0.6rem 0.9rem;
+            font-size: 1rem;
+            border-radius: var(--radius);
+            border: 1.5px solid #d6d8dc;
+            background: #fafbfc;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease-in-out;
+            outline-offset: 2px;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus,
+        input[type="email"]:focus {
+            border-color: var(--brand);
+            background: #fff;
+        }
+
+        button[type="submit"] {
+            margin-top: 2rem;
+            width: 100%;
+            padding: 0.85rem 0;
+            background-color: var(--brand);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            box-shadow: 0 3px 16px rgba(68, 188, 147, 0.15);
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        button[type="submit"]:hover,
+        button[type="submit"]:focus {
+            background-color: var(--brand-dark);
+            outline: none;
+        }
+
+        #inline-message {
+            margin-top: 1.25rem;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--success-color);
+            text-align: center;
+            display: none;
+        }
+
+        #inline-message.error {
+            color: var(--error-color);
+        }
+
+        #already-submitted-msg {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--brand-dark);
+            text-align: center;
+            margin-top: 4rem;
+            display: none;
+            padding: 0 1rem;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(40, 40, 40, 0.24);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+            z-index: 9999;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Updated minimal styling for popup-content */
+        .popup-content {
+            background: white;
+            border-radius: 12px;
+            padding: 1.8rem 2rem 2rem;
+            box-shadow: 0 4px 14px rgba(68, 188, 147, 0.12);
+            text-align: center;
+            max-width: 320px;
+            width: 100%;
+            box-sizing: border-box;
+            font-weight: 600;
+            color: var(--brand-dark);
+            line-height: 1.4;
+            user-select: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .popup-icon {
+            font-size: 2.4rem;
+            margin-bottom: 0.75rem;
+            color: var(--brand);
+        }
+
+        /* Popup buttons container simplified and spaced */
+        .popup-buttons {
+            margin-top: 1.25rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .popup-btn {
+            flex: 1;
+            padding: 0.55rem 1rem;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            user-select: none;
+            transition: background-color 0.2s ease-in-out;
+            min-width: 90px;
+        }
+
+        .popup-btn.confirm {
+            background-color: var(--brand);
+            color: white;
+        }
+
+        .popup-btn.confirm:hover,
+        .popup-btn.confirm:focus {
+            background-color: var(--brand-dark);
+            outline: none;
+        }
+
+        .popup-btn.cancel {
+            background-color: #ddd;
+            color: #333;
+        }
+
+        .popup-btn.cancel:hover,
+        .popup-btn.cancel:focus {
+            background-color: #bbb;
+            outline: none;
+        }
+
+        .popup-close-btn {
+            margin-top: 1.5rem;
+            padding: 0.6rem 1.8rem;
+            background-color: var(--brand);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .popup-close-btn:hover,
+        .popup-close-btn:focus {
+            background-color: var(--brand-dark);
+            outline: none;
+        }
+
+        @media (max-width: 480px) {
+            main {
+                padding: 2rem 1.5rem 2rem;
+            }
+
+            .popup-content {
+                width: 90vw;
+                padding: 1.5rem 1.5rem 1.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <section id="form-section" aria-label="Cashback Form Section">
+            <header>
+                <div class="logo" aria-hidden="true"><img src="https://res.cloudinary.com/dtsf7jbkq/image/upload/v1754586646/Add_a_subheading_20250409_123137_0000_pq4ohe.png" alt="logo"> </div>
+                <h1>Tree World Ply Cashback Form</h1>
+                <p class="offer-tag" aria-live="polite">Congratulations! Cashback Offer Unlocked 🎉</p>
+            </header>
+            <form id="cashback-form" autocomplete="on" novalidate>
+                <label for="name">Name <span aria-hidden="true" style="color:var(--error-color);">*</span></label>
+                <input id="name" name="name" type="text" placeholder="Enter your name" required autocomplete="name" />
+                <label for="phone">Phone Number <span aria-hidden="true"
+                        style="color:var(--error-color);">*</span></label>
+                <input id="phone" name="phoneNumber" type="tel" pattern="^\d{10}$" maxlength="10"
+                    placeholder="Enter 10-digit phone number" required autocomplete="tel" />
+                <!-- Email Field (Optional, for communication) -->
+                <label for="email">
+                    Email <span style="color: #aaa; font-weight:400;">(Optional, for communication)</span>
+                </label>
+                <input id="email" name="email" type="email" autocomplete="email"
+                    placeholder="Enter your email address" />
+                <label for="upi">UPI ID <span aria-hidden="true" style="color:var(--error-color);">*</span></label>
+                <input id="upi" name="upiId" type="text" placeholder="Enter your UPI ID (e.g., saroj@upi)" required
+                    autocomplete="off" />
+                <button type="submit">Claim Cashback</button>
+            </form>
+            <div id="inline-message" role="alert" aria-live="assertive"></div>
+        </section>
+        <!-- Upgraded Thank You Message -->
+        <section id="already-submitted-msg" role="region" aria-live="polite" style="display:none; text-align:center;">
+            <div style="font-size:2.5rem; margin-bottom:1rem;">🎉</div>
+            <div style="font-size:1.3rem; font-weight:700; color:var(--brand-dark);">
+                Thank you! Your cashback form<br>was submitted successfully.<br>Check your mail inbox or spam for further details.
+            </div>
+            <div style="margin-top: 0.75rem; color:#34846e; font-weight:600;">
+                <span style="font-size:1.7rem; vertical-align:-.3em;">✔️</span>
+                <span>You'll receive your cashback soon.</span>
+            </div>
+            <div style="margin-top:1.3rem; font-size:1rem; color:#888;">
+                Need help? Call <b>9246156208</b>
+            </div>
+        </section>
+    </main>
+
+    <!-- UPI Confirmation Popup (Minimal & Clean) -->
+    <aside class="popup-overlay" id="upi-confirmation-popup" role="dialog" aria-modal="true"
+        aria-labelledby="upi-confirmation-title" tabindex="-1" hidden>
+        <div class="popup-content">
+            <div class="popup-icon" aria-hidden="true"></div>
+            <h2 id="upi-confirmation-title" style="margin-bottom: 0.5rem;">Please confirm your UPI ID. Once submitted, it can't be changed</h2>
+            <p id="upi-to-confirm" style="font-weight: 700; font-size: 1.15rem; margin: 0 0 1rem;"></p>
+            <div class="popup-buttons">
+                <button class="popup-btn confirm" id="upi-confirm-btn" type="button">Yes</button>
+                <button class="popup-btn cancel" id="upi-cancel-btn" type="button">No</button>
+            </div>
+        </div>
+    </aside>
+    
+    <!-- Error Popup -->
+    <aside class="popup-overlay" id="error-popup" role="alertdialog" aria-modal="true"
+        aria-labelledby="error-popup-title" tabindex="-1" hidden>
+        <div class="popup-content">
+            <div class="popup-icon warning" aria-hidden="true">⚠️</div>
+            <h2 id="error-popup-title" style="margin-bottom: 1rem;">Submission Error</h2>
+            <p id="error-popup-message" style="line-height: 1.4;"></p>
+            <button class="popup-close-btn" id="error-popup-close-btn" type="button">Close</button>
+        </div>
+    </aside>
+
+    <script>
+        (() => {
+            const params = new URLSearchParams(window.location.search);
+            const refId = params.get("refId") || "";
+
+            const formSection = document.getElementById("form-section");
+            const form = document.getElementById("cashback-form");
+            const inlineMessage = document.getElementById("inline-message");
+            const alreadySubmittedMsg = document.getElementById("already-submitted-msg");
+
+            const upiPopup = document.getElementById("upi-confirmation-popup");
+            const upiToConfirmElem = document.getElementById("upi-to-confirm");
+            const upiConfirmBtn = document.getElementById("upi-confirm-btn");
+            const upiCancelBtn = document.getElementById("upi-cancel-btn");
+
+            const errorPopup = document.getElementById("error-popup");
+            const errorPopupMessage = document.getElementById("error-popup-message");
+            const errorPopupCloseBtn = document.getElementById("error-popup-close-btn");
+
+            let pendingUPI = "";
+
+            // Popup helpers (show/hide, focus handling)
+            let removeTrapFocus = null;
+            function trapFocus(element) {
+                const focusables = element.querySelectorAll('button,a,input,[tabindex="0"]');
+                const first = focusables[0], last = focusables[focusables.length - 1];
+                function handler(e) {
+                    if (e.key === 'Tab') {
+                        if (e.shiftKey) {
+                            if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+                        } else {
+                            if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+                        }
+                    }
+                    if (e.key === 'Escape' && element === errorPopup) {
+                        hidePopup(errorPopup);
+                        form.name.focus();
+                    }
+                }
+                element.addEventListener('keydown', handler);
+                return () => element.removeEventListener('keydown', handler);
+            }
+            function showPopup(popup) {
+                popup.hidden = false;
+                popup.classList.add("active");
+                removeTrapFocus = trapFocus(popup);
+                const btn = popup.querySelector("button");
+                if (btn) btn.focus();
+            }
+            function hidePopup(popup) {
+                popup.classList.remove("active");
+                popup.hidden = true;
+                if (removeTrapFocus) { removeTrapFocus(); removeTrapFocus = null; }
+            }
+
+            // Inline message helper
+            function showInlineMessage(msg, isError = false) {
+                inlineMessage.textContent = msg || "";
+                inlineMessage.style.display = msg ? "block" : "none";
+                inlineMessage.classList.toggle("error", isError);
+            }
+
+            // Validation
+            function validateForm() {
+                const name = form.name.value.trim();
+                const phone = form.phoneNumber.value.trim();
+                const upi = form.upiId.value.trim();
+                const email = form.email.value.trim();
+                if (!name) {
+                    showInlineMessage("Please enter your name.", true);
+                    form.name.focus();
+                    return false;
+                }
+                if (!/^\d{10}$/.test(phone)) {
+                    showInlineMessage("Please enter a valid 10-digit phone number.", true);
+                    form.phoneNumber.focus();
+                    return false;
+                }
+                if (email && !/^[\w.\-]+@[\w\-]+\.[a-zA-Z]{2,}$/.test(email)) {
+                    showInlineMessage("Please enter a valid email address.", true);
+                    form.email.focus();
+                    return false;
+                }
+                if (!upi) {
+                    showInlineMessage("Please enter your UPI ID.", true);
+                    form.upiId.focus();
+                    return false;
+                }
+                showInlineMessage("");
+                return true;
+            }
+
+            // On submit: validate, show UPI confirm popup
+            form.addEventListener("submit", e => {
+                e.preventDefault();
+                if (!validateForm()) return;
+                pendingUPI = form.upiId.value.trim();
+                upiToConfirmElem.textContent = pendingUPI;
+                showPopup(upiPopup);
+            });
+
+            // UPI Confirm
+            upiConfirmBtn.addEventListener("click", async () => {
+                hidePopup(upiPopup);
+                const data = {
+                    name: form.name.value.trim(),
+                    phoneNumber: form.phoneNumber.value.trim(),
+                    email: form.email.value.trim(),
+                    upiId: pendingUPI,
+                    refId: refId
+                };
+                showInlineMessage("");
+                try {
+                    const response = await fetch("https://treeworld-cashback-admin.vercel.app/api/requestPayment", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data),
+                    });
+                    if (response.ok) {
+                        showInlineMessage("Response submitted");
+                        form.reset();
+                        pendingUPI = "";
+                        formSection.style.display = "none";
+                        alreadySubmittedMsg.style.display = "block";
+                    } else if (response.status === 403) {
+                        errorPopupMessage.innerHTML = 'Invalid or used coupon, please use a valid token.<br /><strong>Contact: 9246156208</strong>';
+                        showPopup(errorPopup);
+                    } else {
+                        errorPopupMessage.innerHTML = 'We have encountered some technical problem, please try again later or contact the shop at:<br /><strong>9246156208</strong>';
+                        showPopup(errorPopup);
+                    }
+                } catch {
+                    errorPopupMessage.innerHTML = 'We have encountered some technical problem, please check your Internet connection and try again or contact the shop at:<br /><strong>9246156208</strong>';
+                    showPopup(errorPopup);
+                }
+            });
+
+            // UPI Cancel
+            upiCancelBtn.addEventListener("click", () => {
+                hidePopup(upiPopup);
+                form.upiId.focus();
+            });
+
+            // Error close
+            errorPopupCloseBtn.addEventListener("click", () => {
+                hidePopup(errorPopup);
+                form.name.focus();
+            });
+        })();
+    </script>
+</body>
+
+</html>
