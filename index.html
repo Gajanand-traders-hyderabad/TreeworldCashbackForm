@@ -298,6 +298,8 @@
                 <label for="upi">UPI ID <span aria-hidden="true" style="color:var(--error-color);">*</span></label>
                 <input id="upi" name="upiId" type="text" placeholder="Enter your UPI ID (e.g., saroj@upi)" required
                     autocomplete="off" />
+                <label for="city">City <span aria-hidden="true" style="color:var(--error-color);">*</span></label>
+                <input id="city" name="city" type="text" placeholder="Enter your city" required autocomplete="address-level2" />
                 <button type="submit">Claim Cashback</button>
             </form>
             <div id="inline-message" role="alert" aria-live="assertive"></div>
@@ -408,12 +410,18 @@
             // Validation
             function validateForm() {
                 const name = form.name.value.trim();
+                const city = form.city.value.trim();
                 const phone = form.phoneNumber.value.trim();
                 const upi = form.upiId.value.trim();
                 const email = form.email.value.trim();
                 if (!name) {
                     showInlineMessage("Please enter your name.", true);
                     form.name.focus();
+                    return false;
+                }
+                if (!city) {
+                    showInlineMessage("Please enter your city.", true);
+                    form.city.focus();
                     return false;
                 }
                 if (!/^\d{10}$/.test(phone)) {
@@ -449,6 +457,7 @@
                 hidePopup(upiPopup);
                 const data = {
                     name: form.name.value.trim(),
+                    city: form.city.value.trim(),
                     phoneNumber: form.phoneNumber.value.trim(),
                     email: form.email.value.trim(),
                     upiId: pendingUPI,
